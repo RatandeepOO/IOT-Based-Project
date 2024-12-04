@@ -1,0 +1,106 @@
+[
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "CORS",
+        "importPath": "flask_cors",
+        "description": "flask_cors",
+        "isExtraImport": true,
+        "detail": "flask_cors",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "home",
+        "kind": 2,
+        "importPath": "server",
+        "description": "server",
+        "peekOfCode": "def home():\n    is_secure = request.is_secure\n    protocol = \"HTTPS\" if is_secure else \"HTTP\"\n    return jsonify({\n        \"message\": f\"Connection using {protocol}\",\n        \"secure\": is_secure\n    })\n@app.route('/favicon.ico')\ndef favicon():\n    return '', 204  # Returns a \"No Content\" response",
+        "detail": "server",
+        "documentation": {}
+    },
+    {
+        "label": "favicon",
+        "kind": 2,
+        "importPath": "server",
+        "description": "server",
+        "peekOfCode": "def favicon():\n    return '', 204  # Returns a \"No Content\" response\n# Endpoint to control devices via ESP32\n@app.route('/control-device', methods=['POST'])\ndef control_device():\n    data = request.json\n    command = data.get(\"command\")\n    try:\n        # Forward command to ESP32\n        esp_response = requests.post(f\"{ESP32_URL}{command}\")",
+        "detail": "server",
+        "documentation": {}
+    },
+    {
+        "label": "control_device",
+        "kind": 2,
+        "importPath": "server",
+        "description": "server",
+        "peekOfCode": "def control_device():\n    data = request.json\n    command = data.get(\"command\")\n    try:\n        # Forward command to ESP32\n        esp_response = requests.post(f\"{ESP32_URL}{command}\")\n        return jsonify(esp_response.json())\n    except requests.exceptions.RequestException as e:\n        return jsonify({\"status\": \"error\", \"message\": str(e)})\n# Endpoint to fetch weather data",
+        "detail": "server",
+        "documentation": {}
+    },
+    {
+        "label": "get_weather",
+        "kind": 2,
+        "importPath": "server",
+        "description": "server",
+        "peekOfCode": "def get_weather():\n    try:\n        response = requests.get(\"https://wttr.in/kashipur?format=j1\")\n        data = response.json()\n        return jsonify(data)\n    except Exception as e:\n        return jsonify({\"status\": \"error\", \"message\": str(e)})\n# Endpoint to fetch news data\n@app.route('/news', methods=['GET'])\ndef get_news():",
+        "detail": "server",
+        "documentation": {}
+    },
+    {
+        "label": "get_news",
+        "kind": 2,
+        "importPath": "server",
+        "description": "server",
+        "peekOfCode": "def get_news():\n    try:\n        url = \"https://newsapi.org/v2/top-headlines?country=in&apiKey=028c9fc91fd04dd99d86ba3db42db83d\"\n        response = requests.get(url)\n        data = response.json()\n        headlines = [article['title'] for article in data['articles'][:5]]\n        return jsonify({\"news\": headlines})\n    except Exception as e:\n        return jsonify({\"status\": \"error\", \"message\": str(e)})\nif __name__ == '__main__':",
+        "detail": "server",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "server",
+        "description": "server",
+        "peekOfCode": "app = Flask(__name__)\nCORS(app)\n# ESP32 IP address\nESP32_URL = \"http://192.168.137.121\"\n@app.route('/')\ndef home():\n    is_secure = request.is_secure\n    protocol = \"HTTPS\" if is_secure else \"HTTP\"\n    return jsonify({\n        \"message\": f\"Connection using {protocol}\",",
+        "detail": "server",
+        "documentation": {}
+    },
+    {
+        "label": "ESP32_URL",
+        "kind": 5,
+        "importPath": "server",
+        "description": "server",
+        "peekOfCode": "ESP32_URL = \"http://192.168.137.121\"\n@app.route('/')\ndef home():\n    is_secure = request.is_secure\n    protocol = \"HTTPS\" if is_secure else \"HTTP\"\n    return jsonify({\n        \"message\": f\"Connection using {protocol}\",\n        \"secure\": is_secure\n    })\n@app.route('/favicon.ico')",
+        "detail": "server",
+        "documentation": {}
+    }
+]

@@ -1,0 +1,178 @@
+body,
+html {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: url('https://source.unsplash.com/1600x900/?technology,smart-home') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #222222;
+    background: repeating-linear-gradient(45deg,
+            #2b2b2b 0%,
+            #2b2b2b 10%,
+            #222222 0%,
+            #222222 50%) 0 / 15px 15px;
+    overflow: hidden;
+}
+
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+h1 {
+    text-align: center;
+    color: #61dafb;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    margin-bottom: 20px;
+}
+
+.container {
+    text-align: center;
+    padding: 30px;
+    border-radius: 12px;
+    background-color: rgba(51, 51, 51, 0.8);
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+}
+
+.output {
+    margin-bottom: 20px;
+    padding: 15px;
+    font-weight: bold;
+    font-style: italic;
+    border: 1px solid #61dafb;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    min-height: 50px;
+    /* Ensures space for output */
+    overflow-y: auto;
+    /* Allows scrolling if content exceeds height */
+}
+
+button {
+    margin: 10px;
+    padding: 15px 30px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #61dafb;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #21a1f1;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+#startVoice {
+    background-color: #ffcc00;
+    /* Bright yellow background */
+    border: 2px solid #ff9900;
+    /* Darker yellow border */
+    font-weight: bold;
+    /* Bold text */
+    font-size: 18px;
+    /* Larger font size */
+}
+
+#startVoice:hover {
+    background-color: #ffb300;
+    /* Darker yellow on hover */
+}
+
+#esp32Ip {
+    background-color: blue;
+    padding: 12px 45px;
+    color: white;
+    font-weight: bold;
+}
+
+
+
+input::-webkit-input-placeholder {
+    font-weight: bold;
+    font-style: italic;
+    color: white;
+}
+
+.output {
+    margin-bottom: 20px;
+    padding: 15px;
+    font-weight: bold;
+    font-style: italic;
+    border: 1px solid #61dafb;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    min-height: 50px;
+    max-height: 128px;
+    /* Set a maximum height for the output area */
+    overflow-y: auto;
+    /* Allows scrolling if content exceeds height */
+}
+
+#container {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+/*Neon*/
+a {
+    text-align: center;
+    font-size: 7em;
+    margin-bottom: 0;
+    margin-top: 0;
+    line-height: 1;
+    text-decoration: none;
+    color: #fff;
+}
+
+#heading {
+    text-align: justify;
+    font-size: 70px;
+}
+
+a:nth-child(1) {
+    font-family: Vampiro One;
+    animation: neon6 1.5s ease-in-out infinite alternate;
+}
+
+
+@keyframes neon6 {
+    from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de,
+            0 0 70px #ff00de, 0 0 80px #ff00de, 0 0 100px #ff00de, 0 0 150px #ff00de;
+    }
+
+    to {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de,
+            0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de;
+    }
+}
+
+/*Make stuff responsive*/
+
+@media (max-width: 650px) {
+    p {
+        font-size: 3.5em;
+    }
+}
