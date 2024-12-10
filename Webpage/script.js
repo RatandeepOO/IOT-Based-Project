@@ -31,9 +31,9 @@ document.getElementById("getWeather").addEventListener("click", getWeather);
 
 // News Function using NewsAPI
 const getNews = async () => {
-    const NEWS_API_KEY = 'YOUR_NEWS_API_KEY'; // Replace with your API key
+    const NEWS_API_KEY = '028c9fc91fd04dd99d86ba3db42db83d'; // Replace with your API key
     try {
-        const response = await fetch(`https://newsapi.org/v2/top-headlines?country=us&apiKey=${NEWS_API_KEY}`);
+        const response = await fetch(`https://newsapi.org/v2/top-headlines?country=in&apiKey=${NEWS_API_KEY}`);
         const data = await response.json();
         const headlines = data.articles.slice(0, 5).map(article => article.title).join('\n\n');
         displayOutput(`Top 5 Headlines:\n\n${headlines}`);
@@ -56,6 +56,7 @@ const setupVoiceControl = () => {
     recognition.onerror = (event) => {
         console.error('Speech recognition error:', event.error);
         displayOutput('Speech recognition error: ' + event.error);
+        alert("error")
     };
 
     return recognition;
@@ -79,7 +80,7 @@ const processVoiceCommand = (command) => {
 };
 
 // Get ESP32 IP address from user input
-const esp32IpAddressInput = document.getElementById('esp32IpAddress');
+const esp32IpAddressInput = document.getElementById('esp32Ip');
 let esp32IpAddress = esp32IpAddressInput.value;
 
 // Initialize voice recognition
