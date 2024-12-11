@@ -33,7 +33,7 @@ document.getElementById("getWeather").addEventListener("click", getWeather);
 const getNews = async () => {
     const NEWS_API_KEY = '028c9fc91fd04dd99d86ba3db42db83d'; // Replace with your API key
     try {
-        const response = await fetch(`https://newsapi.org/v2/top-headlines?country=in&apiKey=${NEWS_API_KEY}`);
+        const response = await fetch(`https://newsapi.org/v2/top-headlines?country=us&apiKey=${NEWS_API_KEY}`);
         const data = await response.json();
         const headlines = data.articles.slice(0, 5).map(article => article.title).join('\n\n');
         displayOutput(`Top 5 Headlines:\n\n${headlines}`);
