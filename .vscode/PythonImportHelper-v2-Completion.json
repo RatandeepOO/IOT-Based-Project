@@ -1,106 +1,118 @@
 [
     {
-        "label": "Flask",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "request",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "jsonify",
-        "importPath": "flask",
-        "description": "flask",
-        "isExtraImport": true,
-        "detail": "flask",
-        "documentation": {}
-    },
-    {
-        "label": "CORS",
-        "importPath": "flask_cors",
-        "description": "flask_cors",
-        "isExtraImport": true,
-        "detail": "flask_cors",
-        "documentation": {}
-    },
-    {
-        "label": "requests",
+        "label": "network",
         "kind": 6,
         "isExtraImport": true,
-        "importPath": "requests",
-        "description": "requests",
-        "detail": "requests",
+        "importPath": "network",
+        "description": "network",
+        "detail": "network",
         "documentation": {}
     },
     {
-        "label": "home",
+        "label": "socket",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "socket",
+        "description": "socket",
+        "detail": "socket",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "Pin",
+        "importPath": "machine",
+        "description": "machine",
+        "isExtraImport": true,
+        "detail": "machine",
+        "documentation": {}
+    },
+    {
+        "label": "connect_to_wifi",
         "kind": 2,
-        "importPath": "server",
-        "description": "server",
-        "peekOfCode": "def home():\n    is_secure = request.is_secure\n    protocol = \"HTTPS\" if is_secure else \"HTTP\"\n    return jsonify({\n        \"message\": f\"Connection using {protocol}\",\n        \"secure\": is_secure\n    })\n@app.route('/favicon.ico')\ndef favicon():\n    return '', 204  # Returns a \"No Content\" response",
-        "detail": "server",
+        "importPath": "ESP32Server",
+        "description": "ESP32Server",
+        "peekOfCode": "def connect_to_wifi(ssid, password):\n    station = network.WLAN(network.STA_IF)\n    station.active(True)\n    station.connect(ssid, password)\n    while not station.isconnected():\n        print(\"Connecting to WiFi...\")\n        time.sleep(1)\n    print(\"Connected to WiFi!\")\n    print(\"IP Address:\", station.ifconfig()[0])\n    return station.ifconfig()[0]",
+        "detail": "ESP32Server",
         "documentation": {}
     },
     {
-        "label": "favicon",
+        "label": "create_response",
         "kind": 2,
-        "importPath": "server",
-        "description": "server",
-        "peekOfCode": "def favicon():\n    return '', 204  # Returns a \"No Content\" response\n# Endpoint to control devices via ESP32\n@app.route('/control-device', methods=['POST'])\ndef control_device():\n    data = request.json\n    command = data.get(\"command\")\n    try:\n        # Forward command to ESP32\n        esp_response = requests.post(f\"{ESP32_URL}{command}\")",
-        "detail": "server",
+        "importPath": "ESP32Server",
+        "description": "ESP32Server",
+        "peekOfCode": "def create_response(content):\n    return 'HTTP/1.1 200 OK\\r\\nContent-Type: text/plain\\r\\nAccess-Control-Allow-Origin: *\\r\\n\\r\\n' + content\ndef handle_request(request):\n    print(\"Request received:\", request)\n    if '/light1/on' in request:\n        light_relay1.value(1)\n        return create_response(\"Light 1 turned on\")\n    elif '/light1/off' in request:\n        light_relay1.value(0)\n        return create_response(\"Light 1 turned off\")",
+        "detail": "ESP32Server",
         "documentation": {}
     },
     {
-        "label": "control_device",
+        "label": "handle_request",
         "kind": 2,
-        "importPath": "server",
-        "description": "server",
-        "peekOfCode": "def control_device():\n    data = request.json\n    command = data.get(\"command\")\n    try:\n        # Forward command to ESP32\n        esp_response = requests.post(f\"{ESP32_URL}{command}\")\n        return jsonify(esp_response.json())\n    except requests.exceptions.RequestException as e:\n        return jsonify({\"status\": \"error\", \"message\": str(e)})\n# Endpoint to fetch weather data",
-        "detail": "server",
+        "importPath": "ESP32Server",
+        "description": "ESP32Server",
+        "peekOfCode": "def handle_request(request):\n    print(\"Request received:\", request)\n    if '/light1/on' in request:\n        light_relay1.value(1)\n        return create_response(\"Light 1 turned on\")\n    elif '/light1/off' in request:\n        light_relay1.value(0)\n        return create_response(\"Light 1 turned off\")\n    elif '/light2/on' in request:\n        light_relay2.value(1)",
+        "detail": "ESP32Server",
         "documentation": {}
     },
     {
-        "label": "get_weather",
+        "label": "start_server",
         "kind": 2,
-        "importPath": "server",
-        "description": "server",
-        "peekOfCode": "def get_weather():\n    try:\n        response = requests.get(\"https://wttr.in/kashipur?format=j1\")\n        data = response.json()\n        return jsonify(data)\n    except Exception as e:\n        return jsonify({\"status\": \"error\", \"message\": str(e)})\n# Endpoint to fetch news data\n@app.route('/news', methods=['GET'])\ndef get_news():",
-        "detail": "server",
+        "importPath": "ESP32Server",
+        "description": "ESP32Server",
+        "peekOfCode": "def start_server():\n    ssid = input(\"SSID: \")\n    password = input(\"Password: \")\n    ip = connect_to_wifi(ssid, password)\n    # Start the HTTP server on port 80\n    addr = socket.getaddrinfo('0.0.0.0', 80)[0][-1]\n    s = socket.socket()\n    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)\n    s.bind(addr)\n    s.listen(5)",
+        "detail": "ESP32Server",
         "documentation": {}
     },
     {
-        "label": "get_news",
-        "kind": 2,
-        "importPath": "server",
-        "description": "server",
-        "peekOfCode": "def get_news():\n    try:\n        url = \"https://newsapi.org/v2/top-headlines?country=in&apiKey=028c9fc91fd04dd99d86ba3db42db83d\"\n        response = requests.get(url)\n        data = response.json()\n        headlines = [article['title'] for article in data['articles'][:5]]\n        return jsonify({\"news\": headlines})\n    except Exception as e:\n        return jsonify({\"status\": \"error\", \"message\": str(e)})\nif __name__ == '__main__':",
-        "detail": "server",
-        "documentation": {}
-    },
-    {
-        "label": "app",
+        "label": "light_relay1",
         "kind": 5,
-        "importPath": "server",
-        "description": "server",
-        "peekOfCode": "app = Flask(__name__)\nCORS(app)\n# ESP32 IP address\nESP32_URL = \"http://192.168.137.121\"\n@app.route('/')\ndef home():\n    is_secure = request.is_secure\n    protocol = \"HTTPS\" if is_secure else \"HTTP\"\n    return jsonify({\n        \"message\": f\"Connection using {protocol}\",",
-        "detail": "server",
+        "importPath": "ESP32Server",
+        "description": "ESP32Server",
+        "peekOfCode": "light_relay1 = Pin(12, Pin.OUT)\nlight_relay2 = Pin(14, Pin.OUT)\nlight_relay3 = Pin(27, Pin.OUT)\nlight_relay4 = Pin(26, Pin.OUT)\nfan_relay = Pin(25, Pin.OUT)\ndef connect_to_wifi(ssid, password):\n    station = network.WLAN(network.STA_IF)\n    station.active(True)\n    station.connect(ssid, password)\n    while not station.isconnected():",
+        "detail": "ESP32Server",
         "documentation": {}
     },
     {
-        "label": "ESP32_URL",
+        "label": "light_relay2",
         "kind": 5,
-        "importPath": "server",
-        "description": "server",
-        "peekOfCode": "ESP32_URL = \"http://192.168.137.121\"\n@app.route('/')\ndef home():\n    is_secure = request.is_secure\n    protocol = \"HTTPS\" if is_secure else \"HTTP\"\n    return jsonify({\n        \"message\": f\"Connection using {protocol}\",\n        \"secure\": is_secure\n    })\n@app.route('/favicon.ico')",
-        "detail": "server",
+        "importPath": "ESP32Server",
+        "description": "ESP32Server",
+        "peekOfCode": "light_relay2 = Pin(14, Pin.OUT)\nlight_relay3 = Pin(27, Pin.OUT)\nlight_relay4 = Pin(26, Pin.OUT)\nfan_relay = Pin(25, Pin.OUT)\ndef connect_to_wifi(ssid, password):\n    station = network.WLAN(network.STA_IF)\n    station.active(True)\n    station.connect(ssid, password)\n    while not station.isconnected():\n        print(\"Connecting to WiFi...\")",
+        "detail": "ESP32Server",
+        "documentation": {}
+    },
+    {
+        "label": "light_relay3",
+        "kind": 5,
+        "importPath": "ESP32Server",
+        "description": "ESP32Server",
+        "peekOfCode": "light_relay3 = Pin(27, Pin.OUT)\nlight_relay4 = Pin(26, Pin.OUT)\nfan_relay = Pin(25, Pin.OUT)\ndef connect_to_wifi(ssid, password):\n    station = network.WLAN(network.STA_IF)\n    station.active(True)\n    station.connect(ssid, password)\n    while not station.isconnected():\n        print(\"Connecting to WiFi...\")\n        time.sleep(1)",
+        "detail": "ESP32Server",
+        "documentation": {}
+    },
+    {
+        "label": "light_relay4",
+        "kind": 5,
+        "importPath": "ESP32Server",
+        "description": "ESP32Server",
+        "peekOfCode": "light_relay4 = Pin(26, Pin.OUT)\nfan_relay = Pin(25, Pin.OUT)\ndef connect_to_wifi(ssid, password):\n    station = network.WLAN(network.STA_IF)\n    station.active(True)\n    station.connect(ssid, password)\n    while not station.isconnected():\n        print(\"Connecting to WiFi...\")\n        time.sleep(1)\n    print(\"Connected to WiFi!\")",
+        "detail": "ESP32Server",
+        "documentation": {}
+    },
+    {
+        "label": "fan_relay",
+        "kind": 5,
+        "importPath": "ESP32Server",
+        "description": "ESP32Server",
+        "peekOfCode": "fan_relay = Pin(25, Pin.OUT)\ndef connect_to_wifi(ssid, password):\n    station = network.WLAN(network.STA_IF)\n    station.active(True)\n    station.connect(ssid, password)\n    while not station.isconnected():\n        print(\"Connecting to WiFi...\")\n        time.sleep(1)\n    print(\"Connected to WiFi!\")\n    print(\"IP Address:\", station.ifconfig()[0])",
+        "detail": "ESP32Server",
         "documentation": {}
     }
 ]
